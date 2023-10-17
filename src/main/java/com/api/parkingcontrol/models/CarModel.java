@@ -32,4 +32,7 @@ public class CarModel implements Serializable {
     private String colorCar;
     @Column(nullable = false)
     private LocalDateTime registrationDate;
+
+    @OneToOne(mappedBy = "vehicle")
+    private ParkingSpotModel spotModel;
 }
