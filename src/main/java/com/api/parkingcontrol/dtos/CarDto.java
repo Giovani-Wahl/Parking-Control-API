@@ -1,23 +1,24 @@
 package com.api.parkingcontrol.dtos;
 
-import com.api.parkingcontrol.models.CarModel;
+import com.api.parkingcontrol.models.ParkingSpotModel;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParkingSpotDto {
+public class CarDto {
     @NotBlank
-    private String parkingSpotNumber;
+    private String licensePlateCar;
     @NotBlank
-    private String responsibleName;
+    private String brandCar;
     @NotBlank
-    private String apartment;
+    private String modelCar;
     @NotBlank
-    private String block;
+    private String colorCar;
 
-    private CarModel vehicle;
+    private ParkingSpotModel spotModel;
 }
