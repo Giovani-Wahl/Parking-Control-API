@@ -33,7 +33,6 @@ public class CarModel implements Serializable {
     @Column(nullable = false)
     private LocalDateTime registrationDate;
 
-    @OneToOne
-    @JoinColumn(name = "parkingSpot_id")
+    @OneToOne(mappedBy = "vehicle")
     private ParkingSpotModel spotModel;
 }

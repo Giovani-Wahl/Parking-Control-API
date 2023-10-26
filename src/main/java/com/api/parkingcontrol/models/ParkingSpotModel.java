@@ -33,6 +33,7 @@ public class ParkingSpotModel implements Serializable {
     @Column(nullable = false)
     private LocalDateTime registrationDate;
 
-    @OneToOne(mappedBy = "spotModel", cascade = CascadeType.ALL)
-    private CarModel vehicle;
+   @OneToOne(cascade = CascadeType.ALL)
+   @JoinColumn(name = "car_id")
+   private CarModel vehicle;
 }
