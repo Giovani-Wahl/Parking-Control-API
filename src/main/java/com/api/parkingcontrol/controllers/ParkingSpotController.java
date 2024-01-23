@@ -19,8 +19,8 @@ import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/parking-spot")
+
+
 public class ParkingSpotController {
     @Autowired
     ParkingSpotService parkingSpotService;
@@ -43,12 +43,12 @@ public class ParkingSpotController {
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotService.save(parkingSpotModel));
     }
 
-    @GetMapping
+
     public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpot(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll(pageable));
     }
 
-    @GetMapping("/{id}")
+
     public ResponseEntity<Object> getById(@PathVariable(value="id") UUID id){
         Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
         if (!parkingSpotModelOptional.isPresent()){
