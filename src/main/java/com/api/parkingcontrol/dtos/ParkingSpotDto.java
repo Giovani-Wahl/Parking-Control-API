@@ -14,19 +14,16 @@ public class ParkingSpotDto {
     private String apartment;
     @NotBlank(message = "Required field. ")
     private String block;
-    private VehicleDTO vehicle;
 
     public ParkingSpotDto() {
     }
 
-    public ParkingSpotDto(Long id, String parkingSpotNumber, String responsibleName, String apartment, String block,
-                          VehicleDTO vehicle) {
+    public ParkingSpotDto(Long id, String parkingSpotNumber, String responsibleName, String apartment, String block) {
         this.id = id;
         this.parkingSpotNumber = parkingSpotNumber;
         this.responsibleName = responsibleName;
         this.apartment = apartment;
         this.block = block;
-        this.vehicle = vehicle;
     }
     public ParkingSpotDto(ParkingSpot entity) {
         id = entity.getId();
@@ -69,12 +66,5 @@ public class ParkingSpotDto {
     }
     public void setBlock(String block) {
         this.block = block;
-    }
-
-    public VehicleDTO getVehicle() {
-        return vehicle;
-    }
-    public void setVehicle(VehicleDTO vehicle) {
-        this.vehicle = vehicle;
     }
 }

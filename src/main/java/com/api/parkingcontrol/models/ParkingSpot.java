@@ -16,11 +16,14 @@ public class ParkingSpot implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String parkingSpotNumber;
     private LocalDateTime registrationDate;
     private LocalDateTime updateDate;
     private String responsibleName;
+    @Column(unique = true)
     private String apartment;
+    @Column(unique = true)
     private String block;
 
     @OneToOne
