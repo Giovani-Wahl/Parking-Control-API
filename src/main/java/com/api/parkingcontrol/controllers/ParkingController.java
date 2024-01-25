@@ -32,8 +32,8 @@ public class ParkingController {
         return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id){
-        return null;
+    public ResponseEntity<ParkingSpotDto> update(@PathVariable Long id, @Valid @RequestBody ParkingSpotDto dto){
+        return ResponseEntity.status(HttpStatus.OK).body(service.update(id,dto));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){

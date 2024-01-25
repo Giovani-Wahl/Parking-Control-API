@@ -3,6 +3,8 @@ package com.api.parkingcontrol.services;
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
 import com.api.parkingcontrol.models.ParkingSpot;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
+import com.api.parkingcontrol.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
+
 @Service
 public class ParkingServiceImpl implements ParkingService {
     @Autowired
@@ -19,6 +23,7 @@ public class ParkingServiceImpl implements ParkingService {
 
 
     @Override
+    @Transactional
     public ParkingSpotDto created(@Valid @RequestBody ParkingSpotDto dto) {
         ParkingSpot parkingSpot = new ParkingSpot();
         copyDtoToEntity(dto, parkingSpot);
@@ -39,6 +44,17 @@ public class ParkingServiceImpl implements ParkingService {
         ParkingSpot entity = repository.findById(id).orElseThrow();
         return new ParkingSpotDto(entity);
     }
+
+    @Override
+    @Transactional
+    public ParkingSpotDto update(Long id, ParkingSpotDto dto) {
+        ParkingSpot parkingSpot = repository.getReferenceById(id);
+        copyDtoToEntity(dto,parkingSpot);
+        parkingSpot.setUpdateDate(LocalDateTime.now());
+        parkingSpot = repository.save(parkingSpot);
+        return new ParkingSpotDto(parkingSpot);
+    }
+
     private void copyDtoToEntity(ParkingSpotDto dto, ParkingSpot parkingSpot){
         parkingSpot.setId(dto.getId());
         parkingSpot.setParkingSpotNumber(dto.getParkingSpotNumber());
