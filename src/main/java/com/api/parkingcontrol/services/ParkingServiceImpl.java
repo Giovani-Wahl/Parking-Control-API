@@ -19,8 +19,11 @@ public class ParkingServiceImpl implements ParkingService {
 
 
     @Override
-    public ResponseEntity<ParkingSpotDto> created(@Valid @RequestBody ParkingSpotDto dto) {
-        return null;
+    public ParkingSpotDto created(@Valid @RequestBody ParkingSpotDto dto) {
+        ParkingSpot parkingSpot = new ParkingSpot();
+        copyDtoToEntity(dto, parkingSpot);
+        parkingSpot = repository.save(parkingSpot);
+        return new ParkingSpotDto(parkingSpot);
     }
 
     @Override
@@ -35,5 +38,12 @@ public class ParkingServiceImpl implements ParkingService {
     public ParkingSpotDto findById(Long id) {
         ParkingSpot entity = repository.findById(id).orElseThrow();
         return new ParkingSpotDto(entity);
+    }
+    private void copyDtoToEntity(ParkingSpotDto dto, ParkingSpot parkingSpot){
+        parkingSpot.setId(dto.getId());
+        parkingSpot.setParkingSpotNumber(dto.getParkingSpotNumber());
+        parkingSpot.setResponsibleName(dto.getResponsibleName());
+        parkingSpot.setApartment(dto.getApartment());
+        parkingSpot.setBlock(dto.getBlock());
     }
 }

@@ -1,9 +1,7 @@
 package com.api.parkingcontrol.controllers;
 
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
-import com.api.parkingcontrol.models.ParkingSpot;
 import com.api.parkingcontrol.services.ParkingService;
-import com.api.parkingcontrol.services.ParkingSpotService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +20,7 @@ public class ParkingController {
 
     @PostMapping
     public ResponseEntity<ParkingSpotDto> created(@Valid @RequestBody ParkingSpotDto dto){
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.created(dto));
     }
     @GetMapping
     public ResponseEntity<Page<ParkingSpotDto>> findAll(

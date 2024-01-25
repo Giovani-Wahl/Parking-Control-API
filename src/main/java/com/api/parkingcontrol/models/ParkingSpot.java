@@ -23,7 +23,6 @@ public class ParkingSpot implements Serializable {
     private String responsibleName;
     @Column(unique = true)
     private String apartment;
-    @Column(unique = true)
     private String block;
 
     @OneToOne

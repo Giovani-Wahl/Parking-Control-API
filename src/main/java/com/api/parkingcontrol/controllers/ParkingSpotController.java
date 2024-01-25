@@ -20,8 +20,7 @@ import java.util.Optional;
 
 
 public class ParkingSpotController {
-    @Autowired
-    ParkingSpotService parkingSpotService;
+
 
     /*public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto){
 
@@ -42,18 +41,6 @@ public class ParkingSpotController {
     }
 
 
-    public ResponseEntity<Page<ParkingSpot>> getAllParkingSpot(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
-        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll(pageable));
-    }
-
-
-    public ResponseEntity<Object> getById(@PathVariable(value="id") Long id){
-        Optional<ParkingSpot> parkingSpotOptional = parkingSpotService.findById(id);
-        if (!parkingSpotOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found.");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotOptional.get());
-    }
 
     public ResponseEntity<Object> deleteParkingSpot(@PathVariable(value = "id") Long id){
         Optional<ParkingSpot> parkingSpotOptional = parkingSpotService.findById(id);
