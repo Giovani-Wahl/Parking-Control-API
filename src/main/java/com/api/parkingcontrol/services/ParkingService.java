@@ -9,4 +9,5 @@ public interface ParkingService {
     Page<ParkingSpotDto> findAll(Pageable pageable);
     ParkingSpotDto findById(Long id);
     ParkingSpotDto update(Long id, ParkingSpotDto dto);
+    void delete(Long id);
 }

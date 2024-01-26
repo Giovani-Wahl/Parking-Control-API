@@ -3,14 +3,12 @@ package com.api.parkingcontrol.services;
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
 import com.api.parkingcontrol.models.ParkingSpot;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
-import com.api.parkingcontrol.services.exceptions.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,6 +25,7 @@ public class ParkingServiceImpl implements ParkingService {
     public ParkingSpotDto created(@Valid @RequestBody ParkingSpotDto dto) {
         ParkingSpot parkingSpot = new ParkingSpot();
         copyDtoToEntity(dto, parkingSpot);
+        parkingSpot.setRegistrationDate(LocalDateTime.now());
         parkingSpot = repository.save(parkingSpot);
         return new ParkingSpotDto(parkingSpot);
     }
@@ -49,14 +48,19 @@ public class ParkingServiceImpl implements ParkingService {
     @Transactional
     public ParkingSpotDto update(Long id, ParkingSpotDto dto) {
         ParkingSpot parkingSpot = repository.getReferenceById(id);
-        copyDtoToEntity(dto,parkingSpot);
+        copyDtoToEntity(dto, parkingSpot);
         parkingSpot.setUpdateDate(LocalDateTime.now());
         parkingSpot = repository.save(parkingSpot);
         return new ParkingSpotDto(parkingSpot);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void  delete(Long id) {
+        repository.deleteById(id);
+    }
+
     private void copyDtoToEntity(ParkingSpotDto dto, ParkingSpot parkingSpot){
-        parkingSpot.setId(dto.getId());
         parkingSpot.setParkingSpotNumber(dto.getParkingSpotNumber());
         parkingSpot.setResponsibleName(dto.getResponsibleName());
         parkingSpot.setApartment(dto.getApartment());
