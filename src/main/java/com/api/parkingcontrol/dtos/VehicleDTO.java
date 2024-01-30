@@ -6,14 +6,14 @@ import jakarta.validation.constraints.Size;
 
 public class VehicleDTO {
     private Long id;
-    @NotBlank(message = "Required field. ")
+
     @Size(max = 7)
     private String licensePlateCar;
-    @NotBlank(message = "Required field. ")
+
     private String brandCar;
-    @NotBlank(message = "Required field. ")
+
     private String modelCar;
-    @NotBlank(message = "Required field. ")
+
     private String colorCar;
 
     public VehicleDTO() {

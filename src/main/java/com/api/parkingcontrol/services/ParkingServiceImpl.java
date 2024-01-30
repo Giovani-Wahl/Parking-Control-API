@@ -2,7 +2,9 @@ package com.api.parkingcontrol.services;
 
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
 import com.api.parkingcontrol.models.ParkingSpot;
+import com.api.parkingcontrol.models.Vehicle;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
+import com.api.parkingcontrol.repositories.VehicleRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,8 @@ import java.time.LocalDateTime;
 public class ParkingServiceImpl implements ParkingService {
     @Autowired
     ParkingSpotRepository repository;
+    @Autowired
+    VehicleRepository vehicleRepository;
 
 
     @Override
@@ -26,6 +30,8 @@ public class ParkingServiceImpl implements ParkingService {
         ParkingSpot parkingSpot = new ParkingSpot();
         copyDtoToEntity(dto, parkingSpot);
         parkingSpot.setRegistrationDate(LocalDateTime.now());
+        Vehicle vehicle = vehicleRepository.getReferenceById(dto.getVehicle().getId());
+        parkingSpot.setVehicle(vehicle);
         parkingSpot = repository.save(parkingSpot);
         return new ParkingSpotDto(parkingSpot);
     }
