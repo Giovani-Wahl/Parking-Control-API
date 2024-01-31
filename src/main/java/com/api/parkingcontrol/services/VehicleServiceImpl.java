@@ -3,19 +3,27 @@ package com.api.parkingcontrol.services;
 import com.api.parkingcontrol.dtos.VehicleDTO;
 import com.api.parkingcontrol.models.Vehicle;
 import com.api.parkingcontrol.repositories.VehicleRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 
+@Service
 public class VehicleServiceImpl implements VehicleService{
     @Autowired
     VehicleRepository repository;
 
     @Override
-    public VehicleDTO created(VehicleDTO dto) {
-        return null;
+    public VehicleDTO created(@Valid @RequestBody VehicleDTO dto) {
+        Vehicle entity = new Vehicle();
+        copyDtoToEntity(dto, entity);
+        entity.setRegistrationDate(LocalDateTime.now());
+        entity = repository.save(entity);
+        return new VehicleDTO(entity);
     }
 
     @Override
@@ -48,6 +56,6 @@ public class VehicleServiceImpl implements VehicleService{
         entity.setLicensePlateCar(dto.getLicensePlateCar());
         entity.setBrandCar(dto.getBrandCar());
         entity.setModelCar(dto.getModelCar());
-        entity.setModelCar(dto.getModelCar());
+        entity.setColorCar(dto.getColorCar());
     }
 }
