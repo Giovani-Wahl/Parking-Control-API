@@ -5,6 +5,7 @@ import com.api.parkingcontrol.models.ParkingSpot;
 import com.api.parkingcontrol.models.Vehicle;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
 import com.api.parkingcontrol.repositories.VehicleRepository;
+import com.api.parkingcontrol.services.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,7 +47,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     @Transactional(readOnly = true)
     public ParkingSpotDto findById(Long id) {
-        ParkingSpot entity = repository.findById(id).orElseThrow();
+        ParkingSpot entity = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException(" Id not found !"));
         return new ParkingSpotDto(entity);
     }
 

@@ -49,7 +49,7 @@ public class VehicleServiceImpl implements VehicleService{
 
     @Override
     public void delete(Long id) {
-
+        repository.deleteById(id);
     }
 
     private void copyDtoToEntity(VehicleDTO dto, Vehicle entity) {
