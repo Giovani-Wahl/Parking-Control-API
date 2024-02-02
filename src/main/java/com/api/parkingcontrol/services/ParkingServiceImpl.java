@@ -5,9 +5,12 @@ import com.api.parkingcontrol.models.ParkingSpot;
 import com.api.parkingcontrol.models.Vehicle;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
 import com.api.parkingcontrol.repositories.VehicleRepository;
+import com.api.parkingcontrol.services.exceptions.DatabaseException;
 import com.api.parkingcontrol.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -54,17 +57,30 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     @Transactional
     public ParkingSpotDto update(Long id, ParkingSpotDto dto) {
-        ParkingSpot parkingSpot = repository.getReferenceById(id);
-        copyDtoToEntity(dto, parkingSpot);
-        parkingSpot.setUpdateDate(LocalDateTime.now());
-        parkingSpot = repository.save(parkingSpot);
-        return new ParkingSpotDto(parkingSpot);
+        try {
+            ParkingSpot parkingSpot = repository.getReferenceById(id);
+            copyDtoToEntity(dto, parkingSpot);
+            parkingSpot.setUpdateDate(LocalDateTime.now());
+            parkingSpot = repository.save(parkingSpot);
+            return new ParkingSpotDto(parkingSpot);
+        }
+        catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Resource not found !");
+        }
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public void  delete(Long id) {
-        repository.deleteById(id);
+        if (!repository.existsById(id)){
+            throw new ResourceNotFoundException("Resource not found !");
+        }
+        try {
+            repository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Referential integrity failure !");
+        }
     }
 
     private void copyDtoToEntity(ParkingSpotDto dto, ParkingSpot parkingSpot){
