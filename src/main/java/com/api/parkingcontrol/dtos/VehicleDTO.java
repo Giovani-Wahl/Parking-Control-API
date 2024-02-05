@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 public class VehicleDTO {
     private Long id;
     @NotBlank(message = "Required field. ")
-    @Size(max = 7)
+    @Size(max = 7, message = "Max 7 Digits. ")
     private String licensePlateCar;
     @NotBlank(message = "Required field. ")
     private String brandCar;

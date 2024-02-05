@@ -8,7 +8,6 @@ import com.api.parkingcontrol.repositories.VehicleRepository;
 import com.api.parkingcontrol.services.exceptions.DatabaseException;
 import com.api.parkingcontrol.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +28,7 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     @Transactional
-    public ParkingSpotDto created(@Valid @RequestBody ParkingSpotDto dto) {
+    public ParkingSpotDto created(ParkingSpotDto dto) {
         ParkingSpot parkingSpot = new ParkingSpot();
         copyDtoToEntity(dto, parkingSpot);
         parkingSpot.setRegistrationDate(LocalDateTime.now());
