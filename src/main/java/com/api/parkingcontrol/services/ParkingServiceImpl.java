@@ -29,13 +29,18 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     @Transactional
     public ParkingSpotDto created(ParkingSpotDto dto) {
-        ParkingSpot parkingSpot = new ParkingSpot();
-        copyDtoToEntity(dto, parkingSpot);
-        parkingSpot.setRegistrationDate(LocalDateTime.now());
-        Vehicle vehicle = vehicleRepository.getReferenceById(dto.getVehicle().getId());
-        parkingSpot.setVehicle(vehicle);
-        parkingSpot = repository.save(parkingSpot);
-        return new ParkingSpotDto(parkingSpot);
+        try {
+            ParkingSpot parkingSpot = new ParkingSpot();
+            copyDtoToEntity(dto, parkingSpot);
+            parkingSpot.setRegistrationDate(LocalDateTime.now());
+            Vehicle vehicle = vehicleRepository.getReferenceById(dto.getVehicle().getId());
+            parkingSpot.setVehicle(vehicle);
+            parkingSpot = repository.save(parkingSpot);
+            return new ParkingSpotDto(parkingSpot);
+        }
+        catch (DataIntegrityViolationException e){
+            throw new DatabaseException(" vehicle id not registered or already in use.");
+        }
     }
 
     @Override

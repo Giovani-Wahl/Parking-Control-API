@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
@@ -20,6 +22,7 @@ public class VehicleServiceImpl implements VehicleService{
     VehicleRepository repository;
 
     @Override
+    @Transactional
     public VehicleDTO created(@Valid @RequestBody VehicleDTO dto) {
         Vehicle entity = new Vehicle();
         copyDtoToEntity(dto, entity);
@@ -29,18 +32,21 @@ public class VehicleServiceImpl implements VehicleService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<VehicleDTO> findAll(Pageable pageable) {
         Page<Vehicle> vehicles = repository.findAll(pageable);
         return vehicles.map(VehicleDTO::new);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public VehicleDTO findById(Long id) {
         Vehicle entity = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException(" Id not found !"));
         return new VehicleDTO(entity);
     }
 
     @Override
+    @Transactional
     public VehicleDTO update(Long id, VehicleDTO dto) {
         try {
             Vehicle entity = repository.getReferenceById(id);
@@ -55,6 +61,7 @@ public class VehicleServiceImpl implements VehicleService{
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
         if (!repository.existsById(id)){
             throw new ResourceNotFoundException("Resource not found !");
