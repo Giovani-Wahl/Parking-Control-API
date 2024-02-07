@@ -1,6 +1,7 @@
 package com.api.parkingcontrol.services;
 
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
+import com.api.parkingcontrol.dtos.ReportDTO;
 import com.api.parkingcontrol.models.ParkingSpot;
 import com.api.parkingcontrol.models.Vehicle;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
@@ -48,6 +49,12 @@ public class ParkingServiceImpl implements ParkingService {
     public Page<ParkingSpotDto> findAll(Pageable pageable) {
         Page<ParkingSpot> parkingList =repository.findAll(pageable);
         return parkingList.map(ParkingSpotDto::new);
+    }
+
+    @Override
+    public Page<ReportDTO> searchByLicensePlateCar(String licensePlateCar, Pageable pageable) {
+        Page<ReportDTO> result = repository.searchByLicensePlateCar(licensePlateCar, pageable);
+        return result;
     }
 
     @Override
